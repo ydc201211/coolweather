@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.app.coolweather.R;
 import com.app.coolweather.db.CoolWeatherDB;
 import com.app.coolweather.model.City;
-import com.app.coolweather.model.Country;
+import com.app.coolweather.model.County;
 import com.app.coolweather.model.Province;
 import com.app.coolweather.util.HttpCallbackListener;
 import com.app.coolweather.util.HttpUtil;
@@ -52,7 +52,7 @@ public class ChooseAreaActivity extends AppCompatActivity {
     /**
      * 县列表
      */
-    private List<Country> countyList;
+    private List<County> countyList;
     /**
      * 选中的省份
      */
@@ -156,7 +156,7 @@ public class ChooseAreaActivity extends AppCompatActivity {
         countyList = coolWeatherDB.loadCounties(selectedCity.getId());
         if (countyList.size() > 0) {
             dataList.clear();
-            for (Country county : countyList) {
+            for (County county : countyList) {
                 dataList.add(county.getCountyName());
             }
             adapter.notifyDataSetChanged();

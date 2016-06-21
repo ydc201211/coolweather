@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.app.coolweather.model.City;
-import com.app.coolweather.model.Country;
+import com.app.coolweather.model.County;
 import com.app.coolweather.model.Province;
 
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class CoolWeatherDB {
     /**
      * 将County实例存储到数据库。
      */
-    public void saveCounty(Country country) {
+    public void saveCounty(County country) {
         if (country != null) {
             ContentValues values = new ContentValues();
             values.put("county_name", country.getCountyName());
@@ -133,13 +133,13 @@ public class CoolWeatherDB {
     /**
      * 从数据库读取某城市下所有的县信息。
      */
-    public List<Country> loadCounties(int cityId) {
-        List<Country> list = new ArrayList<Country>();
+    public List<County> loadCounties(int cityId) {
+        List<County> list = new ArrayList<County>();
         Cursor cursor = db.query("County", null, "city_id = ?",
                 new String[] { String.valueOf(cityId) }, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                Country country = new Country();
+                County country = new County();
                 country.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 country.setCountyName(cursor.getString(cursor
                         .getColumnIndex("county_name")));

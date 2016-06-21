@@ -7,7 +7,7 @@ import android.text.TextUtils;
 
 import com.app.coolweather.db.CoolWeatherDB;
 import com.app.coolweather.model.City;
-import com.app.coolweather.model.Country;
+import com.app.coolweather.model.County;
 import com.app.coolweather.model.Province;
 
 import org.json.JSONException;
@@ -76,7 +76,7 @@ public class Utility {
             if (allCounties != null && allCounties.length > 0) {
                 for (String c : allCounties) {
                     String[] array = c.split("\\|");
-                    Country country = new Country();
+                    County country = new County();
                     country.setCountyCode(array[0]);
                     country.setCountyName(array[1]);
                     country.setCityId(cityId);

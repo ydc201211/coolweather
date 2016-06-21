@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by ydc on 2016/6/20.
  */
-public class Country implements Serializable{
+public class County implements Serializable{
     private int id;
 
     private String countyName;
