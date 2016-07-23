@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -73,17 +72,21 @@ public class ChooseAreaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_choose_area);
+        getSupportActionBar().hide();//继承AppCompatActivity隐藏标题栏方法
+        //判断是否从天气界面跳转过来
         isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
+
+        //获取sharePreferences对象
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+
         if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
             Intent intent = new Intent(this, WeatherActivity.class);
             startActivity(intent);
             finish();
             return;
         }
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_choose_area);
         listView = (ListView) findViewById(R.id.list_view);
         titleText = (TextView) findViewById(R.id.title_text);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataList);
@@ -100,9 +103,9 @@ public class ChooseAreaActivity extends AppCompatActivity {
                     selectedCity = cityList.get(index);
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
-                    String countyCode = countyList.get(index).getCountyCode();
+                    String countyName = countyList.get(index).getCountyName();
                     Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
-                    intent.putExtra("county_code", countyCode);
+                    intent.putExtra("county_name", countyName);
                     startActivity(intent);
                     finish();
                 }

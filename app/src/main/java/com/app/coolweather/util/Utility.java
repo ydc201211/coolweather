@@ -9,18 +9,23 @@ import com.app.coolweather.db.CoolWeatherDB;
 import com.app.coolweather.model.City;
 import com.app.coolweather.model.County;
 import com.app.coolweather.model.Province;
+import com.app.coolweather.model.Weather;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by ydc on 2016/6/20.
  */
 public class Utility {
+
+
     /**
      * 解析和处理服务器返回的省级数据
      */
@@ -93,17 +98,36 @@ public class Utility {
      * 解析服务器返回的JSON数据，并将解析出的数据存储到本地。
      */
     public static void handleWeatherResponse(Context context, String response) {
+        List<Weather> list = new ArrayList<Weather>();
         try {
             JSONObject jsonObject = new JSONObject(response);
-            JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
-            String cityName = weatherInfo.getString("city");
-            String weatherCode = weatherInfo.getString("cityid");
-            String temp1 = weatherInfo.getString("temp1");
-            String temp2 = weatherInfo.getString("temp2");
-            String weatherDesp = weatherInfo.getString("weather");
-            String publishTime = weatherInfo.getString("ptime");
-            saveWeatherInfo(context, cityName, weatherCode, temp1, temp2,
-                    weatherDesp, publishTime);
+            JSONObject data = jsonObject.getJSONObject("data");
+            String temp = data.getString("wendu");
+            String health = data.getString("ganmao");
+            String cityName = data.getString("city");
+
+            JSONObject data1 = data.getJSONObject("yesterday");
+            String yhigh = data1.getString("high");
+            String ylow = data1.getString("low");
+            String fl = data1.getString("fl");
+            String fx = data1.getString("fx");
+            String type = data1.getString("type");
+            String date = data1.getString("date");
+
+
+            JSONArray forecastArray = data.getJSONArray("forecast");
+            for(int i = 0;i < forecastArray.length();i++ ){
+                Weather w = new Weather();
+                w.setHigh(forecastArray.getJSONObject(i).getString("high"));
+                w.setLow(forecastArray.getJSONObject(i).getString("low"));
+                w.setDate(forecastArray.getJSONObject(i).getString("date"));
+                w.setWindDirection(forecastArray.getJSONObject(i).getString("fengxiang"));
+                w.setWindPower(forecastArray.getJSONObject(i).getString("fengli"));
+                w.setType(forecastArray.getJSONObject(i).getString("type"));
+                list.add(w);
+            }
+
+            saveWeatherInfo(context, cityName,temp,health,list,yhigh,ylow,fl,fx,type,date);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -113,19 +137,35 @@ public class Utility {
      * 将服务器返回的所有天气信息存储到SharedPreferences文件中。
      */
     public static void saveWeatherInfo(Context context, String cityName,
-                                       String weatherCode, String temp1, String temp2, String weatherDesp,
-                                       String publishTime) {
+                                       String temp,String health,List<Weather> list,
+                                       String yhigh,String ylow,String fl,String fx,String type,
+                                       String date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日", Locale.CHINA);
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(context).edit();
         editor.putBoolean("city_selected", true);
         editor.putString("city_name", cityName);
-        editor.putString("weather_code", weatherCode);
-        editor.putString("temp1", temp1);
-        editor.putString("temp2", temp2);
-        editor.putString("weather_desp", weatherDesp);
-        editor.putString("publish_time", publishTime);
-        editor.putString("current_date", sdf.format(new Date()));
+        editor.putString("temp", temp);
+        editor.putString("health", health);
+
+        for(int i=0;i < list.size();i++){
+            editor.putString("high" + i,list.get(i).getHigh());
+            editor.putString("low" + i,list.get(i).getLow());
+            editor.putString("date"+ i,list.get(i).getDate());
+            editor.putString("fengxiang"+ i,list.get(i).getWindDirection());
+            editor.putString("fengli"+ i,list.get(i).getWindPower());
+            editor.putString("type"+i,list.get(i).getType());
+
+
+        }
+
+        editor.putString("yhigh",yhigh);
+        editor.putString("ylow",ylow);
+        editor.putString("fl",fl);
+        editor.putString("fx",fx);
+        editor.putString("type",type);
+        editor.putString("ydate",date);
+
         editor.commit();
     }
 }
