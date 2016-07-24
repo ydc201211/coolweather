@@ -82,6 +82,7 @@ public class CoolWeatherDB {
         return list;
     }
 
+
     /**
      * 将City实例存储到数据库。
      */
@@ -129,6 +130,8 @@ public class CoolWeatherDB {
             db.insert("County", null, values);
         }
     }
+
+
 
     /**
      * 从数据库读取某城市下所有的县信息。

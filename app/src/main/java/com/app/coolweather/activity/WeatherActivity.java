@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.coolweather.R;
+import com.app.coolweather.db.CoolWeatherDB;
 import com.app.coolweather.service.AutoUpdateService;
 import com.app.coolweather.util.HttpCallbackListener;
 import com.app.coolweather.util.HttpUtil;
@@ -85,6 +86,9 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         switchCity = (Button) findViewById(R.id.switch_city);//切换城市按钮
         refreshWeather = (Button) findViewById(R.id.refresh_weather);//刷新天气按钮
         String countyName = getIntent().getStringExtra("county_name");
+
+        CoolWeatherDB coolWeatherDB = CoolWeatherDB.getInstance(this);
+
         if (!TextUtils.isEmpty(countyName)) {
             // 有县级代号时就去查询天气
             queryWeatherInfo(countyName);
@@ -290,34 +294,34 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         ImageView iv2 = (ImageView) findViewById(R.id.f2_iv);
         TextView tv2_date = (TextView) findViewById(R.id.f2_date);
         TextView tv2_temp = (TextView) findViewById(R.id.f2_temp);
-        tv2_date.setText(prefs.getString("date0",""));
-        tv2_temp.setText(prefs.getString("low0","").substring(3)+"/"+
-                prefs.getString("high0","").substring(3));
-        getIcon(iv2,prefs.getString("type0",""));
+        tv2_date.setText(prefs.getString("date1",""));
+        tv2_temp.setText(prefs.getString("low1","").substring(3)+"/"+
+                prefs.getString("high1","").substring(3));
+        getIcon(iv2,prefs.getString("type1",""));
 
         ImageView iv3 = (ImageView) findViewById(R.id.f3_iv);
         TextView tv3_date = (TextView) findViewById(R.id.f3_date);
         TextView tv3_temp = (TextView) findViewById(R.id.f3_temp);
-        tv3_date.setText(prefs.getString("date1",""));
-        tv3_temp.setText(prefs.getString("low1","").substring(3)+"/"+
-                prefs.getString("high1","").substring(3));
-        getIcon(iv3,prefs.getString("type1",""));
+        tv3_date.setText(prefs.getString("date2",""));
+        tv3_temp.setText(prefs.getString("low2","").substring(3)+"/"+
+                prefs.getString("high2","").substring(3));
+        getIcon(iv3,prefs.getString("type2",""));
 
         ImageView iv4 = (ImageView) findViewById(R.id.f4_iv);
         TextView tv4_date = (TextView) findViewById(R.id.f4_date);
         TextView tv4_temp = (TextView) findViewById(R.id.f4_temp);
-        tv4_date.setText(prefs.getString("date2",""));
-        tv4_temp.setText(prefs.getString("low2","").substring(3)+"/"+
-                prefs.getString("high2","").substring(3));
-        getIcon(iv4,prefs.getString("type2",""));
+        tv4_date.setText(prefs.getString("date3",""));
+        tv4_temp.setText(prefs.getString("low3","").substring(3)+"/"+
+                prefs.getString("high3","").substring(3));
+        getIcon(iv4,prefs.getString("type3",""));
 
         ImageView iv5 = (ImageView) findViewById(R.id.f5_iv);
         TextView tv5_date = (TextView) findViewById(R.id.f5_date);
         TextView tv5_temp = (TextView) findViewById(R.id.f5_temp);
-        tv5_date.setText(prefs.getString("date3",""));
-        tv5_temp.setText(prefs.getString("low3","").substring(3)+"/"+
-                prefs.getString("high3","").substring(3));
-        getIcon(iv5,prefs.getString("type3",""));
+        tv5_date.setText(prefs.getString("date4",""));
+        tv5_temp.setText(prefs.getString("low4","").substring(3)+"/"+
+                prefs.getString("high4","").substring(3));
+        getIcon(iv5,prefs.getString("type4",""));
     }
 
 
